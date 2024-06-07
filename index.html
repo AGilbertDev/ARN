@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Visualisateur d&apos;acides amin&eacute;s</title>
+        <!-- Favicon  -->
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico" /> <!-- Source: Freepik at https://www.flaticon.com/free-icons/molecule -->
+        <!-- Bootstrap -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+        />
+        <!-- Lato -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet" />
+        <!-- Mon CSS -->
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body class="bg-dark text-light" onload="initialize()">
+
+        <main class="container-fluid d-lg-block d-flex flex-column">
+
+            <!-- Titre de l'application -->
+            <h2 class="mx-auto text-center my-auto pt-5">Visualisateur d'acides amin&eacute;s</h2>
+
+            <p class="text-start w-50 mx-auto py-5">L&apos;ARN, tr&egrave;s similaire &agrave; l&apos;ADN, est pr&eacute;sente dans les cellules de tous les êtres vivants. L&apos;ARN est compos&eacute;e d&apos;une chaîne de nucl&eacute;otides, formant des acides amin&eacute;s, pouvant avoir une longueur de quelques milliers de nucl&eacute;otides. Un acide amin&eacute; est compos&eacute; de 3 bases (nucl&eacute;otides). Dans l&apos;ARN, ces bases sont l&apos;uracile (U), la cytosine (C), l&apos;ad&eacute;nine (A) et la guanine (G). Pour visualiser ces acides amin&eacute;s, veuillez utiliser les options ci&dash;dessous.</p>
+
+            <div class="container-fluid">
+                <div class="row row-cols-1 row-cols-lg-2  justify-content-center">
+
+                    
+                    <div class="col-12 col-lg-4">
+                        <!--============================================================  
+                                        Instructions pour l'utilisateur
+                        =============================================================-->
+                        <div class="row mx-auto">
+                            <div class="d-flex flex-column h-100 justify-content-center mx-auto">
+                                
+                                <!-- 1. Choisir de 3 bases dans le tableau -->
+                                <div id="option1">
+                                    <p>1. S&eacute;lectionnez la <span id="instruction" class="text-uppercase text-info">premi&egrave;re base</span> azot&eacute;e dans le tableau<br />
+                                    (cliquer sur U C A G).</p>
+                                    
+                                    <p class="my-5">OU</p>
+                                </div>
+
+                                <!-- 2. Entrer manuellement une chaine d'ARN -->
+                                <div id="option2">
+                                    <p>2. Entrez une cha&icirc;ne d&apos;ARN:</p>
+                                    <form onsubmit="search(); return false;"> <!-- On ne veut pas reloader la page lors d'une recherche. -->
+                                        <div class="input-group input-group-lg">
+                                            <input id="arn" name="arn" type="text" class="form-control form-control-lg" placeholder="augaucucguaa" />
+                                            <button id="searchBtn" class="btn btn-primary" type="submit">Afficher</button>
+                                        </div>
+                                        <p id="error" class="text-danger"></p>
+                                    </form>
+                                </div>
+                                
+                                <div id="restart" class="d-none">
+                                    <a id="restart" href="index.html" class="btn btn-lg btn-primary w-25 mx-auto mb-5">Recommencer</a>
+                                </div>
+                                <div id="confirmation" class="d-none">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--============================================================  
+                                    Affichage des resultats (acides amines)
+                        =============================================================-->
+                        <div class="row mt-5">
+                            <div id="resultats" class="d-flex flex-column">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--================================================================  
+                                         Tableau des acides amines 
+                    =================================================================-->
+                    <div id="tableau" class="col-12 col-lg-6 px-4 mb-5">
+                        <div class="row">
+                            <!-- Partie du haut (Base 2 et ses boutons U C A G) -->
+                            <div class="border col-4 mx-auto">
+                                <div id="base2" class="row py-4 disable bg-secondary"><p>Deuxi&egrave;me base azot&eacute;e</p></div>
+                                <div class="border-top row">
+                                    <button id="base2u" class="border-end col btn bg-secondary disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">U</button>
+                                    <button id="base2c" class="border-end col btn bg-secondary disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">C</button>
+                                    <button id="base2a" class="border-end col btn bg-secondary disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">A</button>
+                                    <button id="base2g" class="col btn bg-secondary disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">G</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Partie de gauche (Base 1 et ses boutons U C A G) -->
+                            <div id="base1" class="border col d-flex px-2 bg-info"><p>Premi&egrave;re base azot&eacute;e</p></div>
+                            <div class="border-top border-bottom col-1 d-flex flex-column">
+                                <button id="base1u" class="border-bottom row flex-fill btn btn-primary" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">U</button>
+                                <button id="base1c" class="border-bottom row flex-fill btn btn-primary" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">C</button>
+                                <button id="base1a" class="border-bottom row flex-fill btn btn-primary" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">A</button>
+                                <button id="base1g" class="row flex-fill btn btn-primary" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">G</button>
+                            </div>
+
+                            <!-- Partie du centre (La grille des acides amines) -->
+                            <div class="border-end border-bottom border-start col-4 d-flex flex-column">
+                                <div class="border-bottom row flex-fill">
+                                    <div id="uuu" class="border-end col aminoacid"><p>Phe</p></div>
+                                    <div id="ucu" class="border-end col aminoacid"><p>Ser</p></div>
+                                    <div id="uau" class="border-end col aminoacid"><p>Tyr</p></div>
+                                    <div id="ugu" class="col aminoacid"><p>Cys</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="uuc" class="border-end col aminoacid"><p>Phe</p></div>
+                                    <div id="ucc" class="border-end col aminoacid"><p>Ser</p></div>
+                                    <div id="uac" class="border-end col aminoacid"><p>Tyr</p></div>
+                                    <div id="ugc" class="col aminoacid"><p>Cys</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="uua" class="border-end col aminoacid"><p>Leu</p></div>
+                                    <div id="uca" class="border-end col aminoacid"><p>Ser</p></div>
+                                    <div id="uaa" class="border-end col aminoacid"><p>STOP</p></div>
+                                    <div id="uga" class="col aminoacid"><p>STOP</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="uug" class="border-end col aminoacid"><p>Leu</p></div>
+                                    <div id="ucg" class="border-end col aminoacid"><p>Ser</p></div>
+                                    <div id="uag" class="border-end col aminoacid"><p>STOP</p></div>
+                                    <div id="ugg" class="col aminoacid"><p>Trp</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="cuu" class="border-end col aminoacid"><p>Leu</p></div>
+                                    <div id="ccu" class="border-end col aminoacid"><p>Pro</p></div>
+                                    <div id="cau" class="border-end col aminoacid"><p>His</p></div>
+                                    <div id="cgu" class="col aminoacid"><p>Arg</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="cuc" class="border-end col aminoacid"><p>Leu</p></div>
+                                    <div id="ccc" class="border-end col aminoacid"><p>Pro</p></div>
+                                    <div id="cac" class="border-end col aminoacid"><p>His</p></div>
+                                    <div id="cgc" class="col aminoacid"><p>Arg</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="cua" class="border-end col aminoacid"><p>Leu</p></div>
+                                    <div id="cca" class="border-end col aminoacid"><p>Pro</p></div>
+                                    <div id="caa" class="border-end col aminoacid"><p>Gln</p></div>
+                                    <div id="cga" class="col aminoacid"><p>Arg</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="cug" class="border-end col aminoacid"><p>Leu</p></div>
+                                    <div id="ccg" class="border-end col aminoacid"><p>Pro</p></div>
+                                    <div id="cag" class="border-end col aminoacid"><p>Gln</p></div>
+                                    <div id="cgg" class="col aminoacid"><p>Arg</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="auu" class="border-end col aminoacid"><p>Ile</p></div>
+                                    <div id="acu" class="border-end col aminoacid"><p>Thr</p></div>
+                                    <div id="aau" class="border-end col aminoacid"><p>Asn</p></div>
+                                    <div id="agu" class="col aminoacid"><p>Ser</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="auc" class="border-end col aminoacid"><p>Ile</p></div>
+                                    <div id="acc" class="border-end col aminoacid"><p>Thr</p></div>
+                                    <div id="aac" class="border-end col aminoacid"><p>Asn</p></div>
+                                    <div id="agc" class="col aminoacid"><p>Ser</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="aua" class="border-end col aminoacid"><p>Ile</p></div>
+                                    <div id="aca" class="border-end col aminoacid"><p>Thr</p></div>
+                                    <div id="aaa" class="border-end col aminoacid"><p>Lys</p></div>
+                                    <div id="aga" class="col aminoacid"><p>Arg</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="aug" class="border-end col aminoacid"><p>Met</p></div>
+                                    <div id="acg" class="border-end col aminoacid"><p>Thr</p></div>
+                                    <div id="aag" class="border-end col aminoacid"><p>Lys</p></div>
+                                    <div id="agg" class="col aminoacid"><p>Arg</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="guu" class="border-end col aminoacid"><p>Val</p></div>
+                                    <div id="gcu" class="border-end col aminoacid"><p>Ala</p></div>
+                                    <div id="gau" class="border-end col aminoacid"><p>Asp</p></div>
+                                    <div id="ggu" class="col aminoacid"><p>Gly</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="guc" class="border-end col aminoacid"><p>Val</p></div>
+                                    <div id="gcc" class="border-end col aminoacid"><p>Ala</p></div>
+                                    <div id="gac" class="border-end col aminoacid"><p>Asp</p></div>
+                                    <div id="ggc" class="col aminoacid"><p>Gly</p></div>
+                                </div>
+                                <div class="border-bottom row flex-fill">
+                                    <div id="gua" class="border-end col aminoacid"><p>Val</p></div>
+                                    <div id="gca" class="border-end col aminoacid"><p>Ala</p></div>
+                                    <div id="gaa" class="border-end col aminoacid"><p>Glu</p></div>
+                                    <div id="gga" class="col aminoacid"><p>Gly</p></div>
+                                </div>
+                                <div class="row flex-fill">
+                                    <div id="gug" class="border-end col aminoacid"><p>Val</p></div>
+                                    <div id="gcg" class="border-end col aminoacid"><p>Ala</p></div>
+                                    <div id="gag" class="border-end col aminoacid"><p>Glu</p></div>
+                                    <div id="ggg" class="col aminoacid"><p>Gly</p></div>
+                                </div>
+                            </div>
+
+                            <!-- Partie de droite (Base 3 et ses boutons U C A G) -->
+                            <div class="border-top border-bottom col-1 d-flex flex-column">
+                                <button id="base30u" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">U</button>
+                                <button id="base30c" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">C</button>
+                                <button id="base30a" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">A</button>
+                                <button id="base30g" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">G</button>
+                                <button id="base31u" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">U</button>
+                                <button id="base31c" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">C</button>
+                                <button id="base31a" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">A</button>
+                                <button id="base31g" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">G</button>
+                                <button id="base32u" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">U</button>
+                                <button id="base32c" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">C</button>
+                                <button id="base32a" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">A</button>
+                                <button id="base32g" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">G</button>
+                                <button id="base33u" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">U</button>
+                                <button id="base33c" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">C</button>
+                                <button id="base33a" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">A</button>
+                                <button id="base33g" class="row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">G</button>
+                            </div>
+                            <div id="base3" class="border col d-flex px-2  disable bg-secondary"><p>Troisi&egrave;me base azot&eacute;e</p></div>
+                        </div>
+                        <div class="row"></div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <footer class="w-100 bg-dark text-white text-center py-2">
+            <p class="my-auto">&copy; 2024 Alexandre Gilbert</p>
+        </footer>
+
+        <!-- Bootstrap -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script>
+        <!-- Mon Javascript -->
+        <script src="js/app.js"></script>
+    </body>
+</html>
