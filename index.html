@@ -29,7 +29,7 @@
 
             <p class="text-start w-50 mx-auto py-5">L&apos;ARN, tr&egrave;s similaire &agrave; l&apos;ADN, est pr&eacute;sente dans les cellules de tous les êtres vivants. L&apos;ARN est compos&eacute;e d&apos;une chaîne de nucl&eacute;otides, formant des acides amin&eacute;s, pouvant avoir une longueur de quelques milliers de nucl&eacute;otides. Un acide amin&eacute; est compos&eacute; de 3 bases (nucl&eacute;otides). Dans l&apos;ARN, ces bases sont l&apos;uracile (U), la cytosine (C), l&apos;ad&eacute;nine (A) et la guanine (G). Pour visualiser ces acides amin&eacute;s, veuillez utiliser les options ci&dash;dessous.</p>
 
-            <div class="container-fluid">
+            <div class="container-lg">
                 <div class="row row-cols-1 row-cols-lg-2  justify-content-center">
 
                     
@@ -61,7 +61,7 @@
                                 </div>
                                 
                                 <div id="restart" class="d-none">
-                                    <a id="restart" href="index.html" class="btn btn-lg btn-primary w-25 mx-auto mb-5">Recommencer</a>
+                                    <a id="restart" href="index.html" class="btn btn-lg btn-primary mx-auto mb-5">Recommencer</a>
                                 </div>
                                 <div id="confirmation" class="d-none">
                                 </div>
@@ -80,11 +80,11 @@
                     <!--================================================================  
                                          Tableau des acides amines 
                     =================================================================-->
-                    <div id="tableau" class="col-12 col-lg-6 px-4 mb-5">
-                        <div class="row">
+                    <div id="tableau" class="col-12 col-lg-8 px-4 mb-5">
+                        <div class="row d-flex justify-content-center ">
                             <!-- Partie du haut (Base 2 et ses boutons U C A G) -->
-                            <div class="border col-4 mx-auto">
-                                <div id="base2" class="row py-4 disable bg-secondary"><p>Deuxi&egrave;me base azot&eacute;e</p></div>
+                            <div class="border col-8 col-lg-4 me-1">
+                                <div id="base2" class="row py-4 disable bg-secondary"><p class="d-none d-xl-inline-block">Deuxi&egrave;me base azot&eacute;e</p><p class="d-xl-none">2</p></div>
                                 <div class="border-top row">
                                     <button id="base2u" class="border-end col btn bg-secondary disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">U</button>
                                     <button id="base2c" class="border-end col btn bg-secondary disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">C</button>
@@ -94,9 +94,9 @@
                             </div>
                         </div>
                         
-                        <div class="row">
+                        <div class="row d-flex justify-content-center mx-auto">
                             <!-- Partie de gauche (Base 1 et ses boutons U C A G) -->
-                            <div id="base1" class="border col d-flex px-2 bg-info"><p>Premi&egrave;re base azot&eacute;e</p></div>
+                            <div id="base1" class="border col-1 col-xl-auto d-flex px-2 bg-info"><p class="d-none d-xl-inline-block">Premi&egrave;re base azot&eacute;e</p><p class="d-xl-none">1</p></div>
                             <div class="border-top border-bottom col-1 d-flex flex-column">
                                 <button id="base1u" class="border-bottom row flex-fill btn btn-primary" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">U</button>
                                 <button id="base1c" class="border-bottom row flex-fill btn btn-primary" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">C</button>
@@ -105,7 +105,7 @@
                             </div>
 
                             <!-- Partie du centre (La grille des acides amines) -->
-                            <div class="border-end border-bottom border-start col-4 d-flex flex-column">
+                            <div class="border-end border-bottom border-start col-8 col-lg-4 d-flex flex-column">
                                 <div class="border-bottom row flex-fill">
                                     <div id="uuu" class="border-end col aminoacid"><p>Phe</p></div>
                                     <div id="ucu" class="border-end col aminoacid"><p>Ser</p></div>
@@ -223,7 +223,7 @@
                                 <button id="base33a" class="border-bottom row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">A</button>
                                 <button id="base33g" class="row flex-fill btn disable" onmouseover="displayItems(this.id)" onmouseout="hideItems(this.id)" onclick="selectItems(this.id)">G</button>
                             </div>
-                            <div id="base3" class="border col d-flex px-2  disable bg-secondary"><p>Troisi&egrave;me base azot&eacute;e</p></div>
+                            <div id="base3" class="border col-1 col-xl-auto d-flex px-2  disable bg-secondary"><p class="d-none d-xl-inline-block">Troisi&egrave;me base azot&eacute;e</p><p class="d-xl-none">3</p></div>
                         </div>
                         <div class="row"></div>
                     </div>
